@@ -3,10 +3,11 @@ const cors = require('cors')
 const ejs = require("ejs") 
 const app = express()
 const mongoose = require("mongoose")
+const userRoute = require("./routes/user.route")
 const dotenv = require("dotenv") 
 dotenv.config()
 const URI = process.env.MONGODB_URI;
-const users =[]
+// const users =[]
 
 const port = process.env.PORT
 app.use(cors())
@@ -22,29 +23,22 @@ mongoose.connect(URI)
 })
 app.set("view engine", "ejs")
 
-app.get('/home', (req, res) => {
-  res.send('Hello World!')
-  console.log("Welcome");
+
+
+// app.get('/home', (req, res) => {
+//   res.send('Hello World!')
+//   console.log("Welcome");
+// })
+
+// // app.get('/signup', )
+// app.get('/signin', (req, res)=>{
+//     res.render('form')
+// })
+
+// app.post('/register')
   
 
-})
-
-app.get('/signup', (req, res)=>{
-    res.render( 'index')
-})
-app.get('/signin', (req, res)=>{
-    res.render('form')
-})
-
-app.post('/register', (req, res)=>{
-  const user = req.body
-  users.push(user)
-
-  
-  // console.log(req.body);
-  res.send("You have successfully registered")
-  
-})
+app.use("/user", userRoute)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
