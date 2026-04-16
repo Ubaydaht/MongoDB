@@ -74,8 +74,8 @@ const postSignup = (req, res) => {
             } else {
                 console.log('Email sent: ' + info.response);
             }
-            });
-            return res.status(201).json({
+
+                return res.status(201).json({
                 message: "sign up successful",
                 user: {
                     id: user._id,
@@ -84,7 +84,9 @@ const postSignup = (req, res) => {
                     email: user.email
 
                 }
-            })        
+            })   
+            });
+     
             // res.redirect("/user/signin");
         })
     
