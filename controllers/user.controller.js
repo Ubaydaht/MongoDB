@@ -46,7 +46,7 @@ const postSignup = (req, res) => {
             // This is the information about the email you are sending
             let mailOptions = {
                 from: 'ubaidatolasunkanmi58@gmail.com',
-                to: [user.email, "ubaidatolasunkanmi@gmail.com"],
+                to: [user.email],
                 subject: 'Welcome to our Application',
                 html: 
                 `
