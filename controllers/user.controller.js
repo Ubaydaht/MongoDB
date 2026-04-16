@@ -75,9 +75,9 @@ const postSignup = (req, res) => {
                 console.log('Email sent: ' + info.response);
             }
 
-                return res.status(201).json({
-                message: "sign up successful",
-                user: {
+            return res.status(201).json({
+            message: "sign up successful",
+            user: {
                     id: user._id,
                     Firstname: user.Firstname,
                     Lastname: user.Lastname,
