@@ -75,9 +75,19 @@ const postSignup = (req, res) => {
                 console.log('Email sent: ' + info.response);
             }
             });
-            
+            return res.status(201).json({
+                message: "sign up successful",
+                user: {
+                    id: user._id,
+                    Firstname: user.Firstname,
+                    Lastname: user.Lastname,
+                    email: user.email
+
+                }
+            })        
             // res.redirect("/user/signin");
         })
+    
         .catch((err) => {
             console.error("Error saving to DB:", err);
             res.status(500).send("Error: " + err.message);
