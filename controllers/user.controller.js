@@ -76,7 +76,7 @@ const postSignup = (req, res) => {
             }
             });
             
-            res.redirect("/user/signin");
+            // res.redirect("/user/signin");
         })
         .catch((err) => {
             console.error("Error saving to DB:", err);
@@ -111,9 +111,16 @@ const postSignin = (req, res) => {
             console.log("Login Successful for", foundCustomers.email);
 
 
-            res.redirect("/user/dashboard");
+            // res.redirect("/user/dashboard");
 
-
+            // success
+            return res.json({
+                message: "Login sucessful",
+                user:{
+                    id: foundCustomers._id,
+                    email: foundCustomers.email,      
+                }
+            })
 
             
         })
