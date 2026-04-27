@@ -2,6 +2,10 @@ const Customer = require("../models/user.model");
 const ejs = require('ejs');
 const bcrypt = require('bcryptjs')
 const nodemailer = require('nodemailer')
+const JWT = require('jsonwebtoken')
+const dotenv = require('dotenv');   
+dotenv.config();
+const JWT_Secret = process.env.jwtSECRET
 
 
 const getSignup = (req, res) => {
@@ -87,7 +91,7 @@ const postSignup = (req, res) => {
             })   
             });
      
-            // res.redirect("/user/signin");
+            res.redirect("/user/signin");
         })
     
         .catch((err) => {
@@ -117,7 +121,18 @@ const postSignin = (req, res) => {
             //     console.log("Invalid Password");
             //     return res.status(400).json({ message: "Invalid email or password"});
             // }
+            const token = JWT.sign({email:req.body.email}, JWT_Secret, {expiresIn: "1h"})
+            console.log("Generated Token:", token);
 
+            return res.json({
+                message: "Login successful",
+                user: {
+                    id: foundCustomers._id,
+                    email: foundCustomers.email,
+                    Firstname: foundCustomers.Firstname,
+                    token: token
+                }
+            })
 
             // Success
             console.log("Login Successful for", foundCustomers.email);
@@ -141,6 +156,35 @@ const postSignin = (req, res) => {
             res.status(500).send("Internal server error");
         });
 }
+
+const getDashboard = (req, res) => {
+    let token = req.headers.authorization.split(" ")[1]; // Assuming token is sent as "Bearer <token>"
+    
+    jwt.verify(token, JWT_Secret, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: "Invalid or expired token" });
+        } else {
+            console.log("Decoded token data:", decoded);
+            let userEmail = decoded.email;
+            
+            Customer.findOne({ email: userEmail })
+                .then((user) => {
+                    if (!user) {
+                        return res.status(404).json({ message: "User not found" });
+                    }
+                    console.log("User found:", user);
+                    res.json({ message: "Dashboard accessed successfully", user: { email: user.email, firstName: user.firstName } });
+                })
+                .catch((err) => {
+                    console.error("Error fetching user:", err);
+                    res.status(500).json({ message: "Internal server error" });
+                });
+        }
+    });
+}
+
+
+
 
 const getAllUsers = (req, res) => {
     Customer.find()
