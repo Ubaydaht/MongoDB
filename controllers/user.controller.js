@@ -16,9 +16,6 @@ const getSignin = (req, res) => {
     res.render("form");
 }
 
-const getDashboard = (req, res) => {
-    res.render("dashboard");
-}
 
 const postSignup = (req, res) => {
 
