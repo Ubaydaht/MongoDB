@@ -139,7 +139,7 @@ const postSignin = (req, res) => {
 
             // success
             return res.json({
-                message: "Login sucessful",
+                message: "Login Successful",
                 user:{
                     id: foundCustomers._id,
                     email: foundCustomers.email,      
