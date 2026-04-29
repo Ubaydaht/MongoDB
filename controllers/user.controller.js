@@ -2,7 +2,7 @@ const Customer = require("../models/user.model");
 const ejs = require('ejs');
 const bcrypt = require('bcryptjs')
 const nodemailer = require('nodemailer')
-const JWT = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv');   
 dotenv.config();
 const JWT_Secret = process.env.jwtSECRET
@@ -103,7 +103,6 @@ const postSignin = (req, res) => {
     Customer.findOne({ email })
         .then((foundCustomers) => {
             if (!foundCustomers) {
-                console.log("Incoming email:", email);
                 console.log("Invalid email");
                 return res.status(400).json({message: "Invalid email "})
             } 
@@ -118,7 +117,7 @@ const postSignin = (req, res) => {
             //     console.log("Invalid Password");
             //     return res.status(400).json({ message: "Invalid email or password"});
             // }
-            const token = JWT.sign({email:req.body.email}, JWT_Secret, {expiresIn: "1h"})
+            const token = jwt.sign({email:req.body.email}, JWT_Secret, {expiresIn: "1h"})
             console.log("Generated Token:", token);
 
             return res.json({
@@ -130,22 +129,6 @@ const postSignin = (req, res) => {
                     token: token
                 }
             })
-
-            // Success
-            console.log("Login Successful for", foundCustomers.email);
-
-
-            // res.redirect("/user/dashboard");
-
-            // success
-            return res.json({
-                message: "Login Successful",
-                user:{
-                    id: foundCustomers._id,
-                    email: foundCustomers.email,      
-                }
-            })
-
             
         })
         .catch((err) => {
