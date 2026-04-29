@@ -122,7 +122,7 @@ const postSignin = (req, res) => {
             console.log("Generated Token:", token);
 
             return res.json({
-                message: "Login successful",
+                message: "Login Successful",
                 user: {
                     id: foundCustomers._id,
                     email: foundCustomers.email,
